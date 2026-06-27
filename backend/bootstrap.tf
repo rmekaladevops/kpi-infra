@@ -1,3 +1,8 @@
+provider "aws" {
+  region = "ap-south-1"
+
+}
+
 resource "aws_s3_bucket" "tf_state" {
   for_each = toset(["dve", "int", "prod"])
   bucket   = "kpi-tfstate-${each.key}"
@@ -21,6 +26,6 @@ resource "aws_dynamodb_table" "tf_lock" {
   hash_key     = "LockID"
   attribute {
     name = "LockID"
-    type = "5"
+    type = "S"
   }
 }
