@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "tf_state" {
-  for_each = toset(["dve", "int", "prod"])
+  for_each = toset(["dev", "int", "prod"])
   bucket   = "kpi-tfstate-${each.key}"
   lifecycle {
     prevent_destroy = true
@@ -20,7 +20,7 @@ resource "aws_s3_bucket_versioning" "tf_state" {
 }
 
 resource "aws_dynamodb_table" "tf_lock" {
-  for_each     = toset(["dve", "int", "prod"])
+  for_each     = toset(["dev", "int", "prod"])
   name         = "kpi-tflock-${each.key}"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
