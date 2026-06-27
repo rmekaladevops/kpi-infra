@@ -1,3 +1,5 @@
 aws_region   = "ap-south-1"
 environment  = "dev"
-project_name = "kpi"
+project_name = "kpi-infra"
+project      = "kpi"
+vpc_cidr     = "10.0.0.0/16"
