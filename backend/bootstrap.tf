@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "tf_state" {
   for_each = toset(["dev", "int", "prod"])
   bucket   = "kpi-tfstate-${each.key}"
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
