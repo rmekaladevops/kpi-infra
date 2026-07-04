@@ -54,3 +54,11 @@ module "internet-gateway" {
   project     = var.project
   environment = var.environment
 }
+
+# ── Elastic IPs (for NAT Gateways) ───────────────────────────────
+module "elastic_ip" {
+  source      = "../../modules/elastic-ip"
+  count       = length(var.public_subnet_cidrs)
+  project     = var.project
+  environment = var.environment
+}
