@@ -66,10 +66,11 @@ module "elastic_ip" {
 # ── NAT Gateway ──────────────────────────────────────────────────
 module "nat_gateway" {
   source            = "../../modules/nat-gateway"
-  public_subnet_ids = module.public_subnet_ids
-  eip_ids           = module.elastic_ip.eip_ids
-  igw_id            = module.internet_gateway.igw_id
+  public_subnet_ids = module.subnets.public_subnet_ids
+  eip_ids           = flatten(module.elastic_ip[*].eip_ids)
+  igw_id            = module.internet-gateway.igw_id
   project           = var.project
   environment       = var.environment
 
+  depends_on = [module.internet-gateway]
 }
