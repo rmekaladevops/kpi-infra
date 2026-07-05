@@ -74,3 +74,52 @@ module "nat_gateway" {
 
   depends_on = [module.internet-gateway]
 }
+
+# ── Route Tables ──────────────────────────────────────────────────
+module "route_tables" {
+  source             = "../../modules/route-tables"
+  vpc_id             = module.vpc.vpc_id
+  igw_id             = module.internet-gateway.igw_id
+  nat_gateway_ids    = module.nat_gateway.nat_gateway_ids
+  public_subnet_ids  = module.subnets.public_subnet_ids
+  private_subnet_ids = module.subnets.private_subnet_ids
+  project            = var.project
+  environment        = var.environment
+}
+
+# ── Security Groups ───────────────────────────────────────────────
+module "security_groups" {
+  source            = "../../modules/security-groups"
+  vpc_id            = module.vpc.vpc_id
+  vpc_cidr          = module.vpc.vpc_cidr
+  allowed_ssh_cidrs = var.allowed_ssh_cidrs
+  app_port          = var.app_port
+  project           = var.project
+  environment       = var.environment
+}
+
+# ── Key Pair ──────────────────────────────────────────────────────
+module "key_pair" {
+  source      = "../../modules/key-pair"
+  project     = var.project
+  environment = var.environment
+}
+
+# ── Bastion Host ──────────────────────────────────────────────────
+module "bastion_host" {
+  source           = "../../modules/bastion-host"
+  public_subnet_id = module.subnets.public_subnet_ids[0]
+  bastion_sg_id    = module.security_groups.bastion_sg_id
+  key_name         = module.key_pair.key_name
+  instance_type    = var.bastion_instance_type
+  project          = var.project
+  environment      = var.environment
+}
+
+# ── IAM ───────────────────────────────────────────────────────────
+module "iam" {
+  source                  = "../../modules/iam"
+  project                 = var.project
+  environment             = var.environment
+  deployer_principal_arns = var.deployer_principal_arns
+}

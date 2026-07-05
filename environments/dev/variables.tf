@@ -30,3 +30,20 @@ variable "private_subnet_cidrs" {
 variable "availability_zones" {
   type = list(string)
 }
+
+variable "allowed_ssh_cidrs" { type = list(string) }
+variable "app_port" {
+  type    = number
+  default = 8080
+
+}
+variable "bastion_instance_type" {
+  type    = string
+  default = "t3.micro"
+
+}
+
+variable "deployer_principal_arns" {
+  type    = list(string)
+  default = []
+}

@@ -8,3 +8,7 @@ private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
 availability_zones   = ["ap-south-1a", "ap-south-1b"]
 
 
+allowed_ssh_cidrs       = ["0.0.0.0/0"]
+app_port                = 8080
+bastion_instance_type   = "t3.micro"
+deployer_principal_arns = ["arn:aws:iam::262690322759:terraform-admin"]
